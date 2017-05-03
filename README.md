@@ -9,4 +9,7 @@
 
 ## 编辑器
 
-* [JekyII和Dexy](./)
+* [JekyII/Dexy](./Tools/JekyIIAndDexy.md)
+* [npm/Bower](./Tools/npmAndBowser.md)
+* [Grunt/Gulp]
+* 设计工具[Axure/Sketch/<strong>Quartz Composer</strong>]
