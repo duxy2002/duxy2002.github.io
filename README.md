@@ -9,6 +9,7 @@
 ### Angular2
 
 * [如何引入第三方类库](./Tech/AngularJS2/thirdPackage.md)
+* [How to debug AngularJS with Intellij]()
 
 ## 3. 编辑器
 
@@ -23,4 +24,3 @@
 ### 4.1 Git
 * [SSL certificate problem: self signed certificate](./Problem/Git/SelfSignedCertificate.md)
 ### 4,2 npm
-* [Version of @angular/compiler-cli needs to be 2.3.1 or greater. Current version is "undefined".](./Problem/Npm/version.md)
