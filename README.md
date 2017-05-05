@@ -9,7 +9,7 @@
 ### Angular2
 
 * [如何引入第三方类库](./Tech/AngularJS2/thirdPackage.md)
-* [How to debug AngularJS with Intellij]()
+* [How to debug AngularJS with Intellij](./Tech/AngularJS2/debug.md)
 
 ## 3. 编辑器
 
