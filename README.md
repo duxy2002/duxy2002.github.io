@@ -21,4 +21,6 @@
 
 ## 4. 各种遇到的问题
 ### 4.1 Git
-* [SSL certificate problem: self signed certificate](./Problem/SelfSignedCertificate.md)
+* [SSL certificate problem: self signed certificate](./Problem/Git/SelfSignedCertificate.md)
+### 4,2 npm
+* [Version of @angular/compiler-cli needs to be 2.3.1 or greater. Current version is "undefined".](./Problem/Npm/version.md)
