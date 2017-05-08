@@ -10,7 +10,7 @@
 
 * [如何引入第三方类库](./Tech/AngularJS2/thirdPackage.md)
 * [How to debug AngularJS with Intellij](./Tech/AngularJS2/debug.md)
-* [ng build --prod: Cannot find module css-loader/index.js?sourcemap&minimize](./)
+* [ng build --prod: Cannot find module css-loader/index.js?sourcemap&minimize](./Tech/AngularJS2/ngbuild.md)
 
 ## 3. 编辑器
 
