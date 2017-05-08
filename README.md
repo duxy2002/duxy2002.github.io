@@ -18,7 +18,7 @@
 * [npm/Bower](./Tools/npmAndBowser.md)
 * [Grunt/Gulp]
 * 设计工具[Axure/Sketch/<strong>Quartz Composer</strong>]
-* [npm](./Tools)
+* [npm](./Tools/npm.md)
 
 
 ## 4. 各种遇到的问题
