@@ -31,4 +31,4 @@
 * [typings ERR! message Unable to connect to "https://api.typings.org/entries/dt/es6-shim/tags/0.31.2%2B20160602141504"](./)
 
 ### 4.4 webdriver-manager
-* [Error: self signed certificate](./)
+* [Error: self signed certificate](./Problem/webdriver/proxy.md)
