@@ -32,3 +32,7 @@
 
 ### 4.4 webdriver-manager
 * [Error: self signed certificate](./Problem/webdriver/proxy.md)
+
+
+### 4.5 chrome
+* [How to disable 'This type of file can harm your computer' pop up](./Problem/Chrome/keepDiscard.md)
