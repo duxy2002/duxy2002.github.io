@@ -5,7 +5,7 @@
 或者
 
 
-set PROXY=http://username:password@proxyserver:port
-set HTTP_PROXY=%PROXY%
-set HTTPS_PROXY=%PROXY% 
+set PROXY=http://username:password@proxyserver:port  
+set HTTP_PROXY=%PROXY%  
+set HTTPS_PROXY=%PROXY%   
 webdriver-manager update
