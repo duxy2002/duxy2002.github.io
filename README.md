@@ -8,9 +8,9 @@
 
 ### Angular2
 
-* [如何引入第三方类库](./Tech/AngularJS2/thirdPackage.md)
-* [How to debug AngularJS with Intellij](./Tech/AngularJS2/debug.md)
-* [ng build --prod: Cannot find module css-loader/index.js?sourcemap&minimize](./Tech/AngularJS2/ngbuild.md)
+* [如何引入第三方类库](Tech/Angular2/thirdPackage.md)
+* [How to debug AngularJS with Intellij](Tech/Angular2/debug.md)
+
 
 ## 3. 编辑器
 
@@ -36,3 +36,6 @@
 
 ### 4.5 chrome
 * [How to disable 'This type of file can harm your computer' pop up](./Problem/Chrome/keepDiscard.md)
+
+### 4.6 Angular2
+* [ng build --prod: Cannot find module css-loader/index.js?sourcemap&minimize](Tech/Angular2/ngbuild.md)
