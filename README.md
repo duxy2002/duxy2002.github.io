@@ -12,11 +12,11 @@
 * [How to debug AngularJS with Intellij](Tech/Angular2/debug.md)
 
 
-## 3. 编辑器
+## 3. Tools
 
 * [JekyII/Dexy](./Tools/JekyIIAndDexy.md)
 * [npm/Bower](./Tools/npmAndBowser.md)
-* [Grunt/Gulp]
+* [Grunt/Gulp/Webpack]
 * 设计工具[Axure/Sketch/<strong>Quartz Composer</strong>]
 * [npm](./Tools/npm.md)
 
@@ -38,4 +38,4 @@
 * [How to disable 'This type of file can harm your computer' pop up](./Problem/Chrome/keepDiscard.md)
 
 ### 4.6 Angular2
-* [ng build --prod: Cannot find module css-loader/index.js?sourcemap&minimize](Tech/Angular2/ngbuild.md)
+* [ng build --prod: Cannot find module css-loader/index.js?sourcemap&minimize](Problem/Angular2/ngbuild.md)
