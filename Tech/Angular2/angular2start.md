@@ -1,4 +1,4 @@
-#angular2 入门
+# angular2 入门
 
 ## 1.引导过程
 
