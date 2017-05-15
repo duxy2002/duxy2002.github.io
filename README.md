@@ -10,8 +10,8 @@
 
 * [如何引入第三方类库](Tech/Angular2/thirdPackage.md)
 * [How to debug AngularJS with Intellij](Tech/Angular2/debug.md)
-
-
+* [Angular2 入门](./Tech/Angular2/angular2start.md)
+* [Angular2 命名规则](./Tech/Angular2/Convertion.md)
 ## 3. Tools
 
 * [JekyII/Dexy](./Tools/JekyIIAndDexy.md)
