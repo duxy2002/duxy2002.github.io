@@ -449,4 +449,227 @@ export class LoginComponent implements OnDestroy {
     
 
 
+## 12. RxJS
+响应式编程需要描述数据流，而不是单个点的数据变量，我们需要把数据的每个变化汇聚成一个数据流。
+map这个操作符做的事情就是允许你对元数据流中的每一个元素应用一个函数，然后返回并形成一个新的数据流，这个数据流中的每一个元素都是原来数据流中的元素应用函数后的值。
+```typescript
+let todo = document.getElementById('todo');
+let input$ = Rx.Observable.fromEvent(todo, 'keyup');
+input$.map(ev=>ev.target.value).subscribe(value=>console.log(value));
 
+```
+而类似.map(ev=>ev.target.value)的场景太多了，可以用pluck这个专门的操作符来应对。这个操作符可以从一系列嵌套的属性中把值提取出来，形成新的流。
+另外subscribe可以有三个函数参数，分别对应于三个状态：next,error和completed。这三个函数就是分别处理这3中状态的。
+* 合并类操作符
+    1. combineLatest操作符
+       是在组合的两个元数据流中选择最新的两个数据进行配对，如果其中一个源之前没有任何数据产生，那么结果流也不会产生数据。
+    2. zip操作符
+        zip和combineLatest非常像，但重要的区别点在于zip严格需要多个源数据流中的每一个相同顺序的元素配对。
+    3. merge操作符
+        他把两个流的元素混在一起，合并成一个，完全按各自的实践顺序，不会等待另外一个流，也不会对两个做什么操作，就是简单地合并成一个流。
+    4. concat操作符
+        严格等待某个流结束后再合并另一个流。
+* 创建类操作符
+    1. from操作符  
+        可以支持从数组，类似数组的对象，Promise,iterable对象或类似Observable的对象（其实这个主要指ES2015中的Observable）来创建一个Observable。
+    2. fromEvent操作符
+        这个操作符是专门为事件转换成Observable而制作的。
+    3. fromEventpattern操作符
+    4. defer操作符
+        defer是直到有订阅者之后才创建Observable，而且它为每个订阅者都会这样做，也就是说其实每个订阅者都是接到到自己的单独数据流序列。
+    5. Interval操作符
+        Rx提供内建的可以创建和计时器相关的Observable方法，第一个是Interval，他可以在指定时间间隔发送证书的自增长序列。
+    6. Timer操作符
+        有2种形式的Timer，一种是指定时间后返回一个序列中只有一个元素（值为0）的Observable。
+        第二种类似于Interval，除了第一个参数是一开始的延迟时间，第二个参数是间隔时间，也就是说，在一开始的延迟时间后，每个一段时间就会返回一个整数序列。
+* 过滤类操作符
+    1. filter
+       Filter操作只允许数据流中满足其predicate测试的元素发射出去，这个predicate函数接收3个元素。
+        * 原始数据流元素
+        * 索引，指该元素在元数据流中的位置（从0开始）
+        * 源Observable对象。
+    2. debounceTime
+        对于一些发射频率比较高的数据流，我们有时会想给它按个”整流器",它可以滤掉指定间隔时间的事件等。
+    3. distinct
+        可以把重复的元素过滤掉。
+    4. skip
+        可以跳过几个元素。
+* 工具类操作符
+* 条件型操作符
+* 数学和聚集性操作符
+* 连接型操作符
+等等。
+
+### 12.1 Subject  
+* BehaviorSubject
+   BehaviorSubject是Subject的一个衍生类，它保存“最近一个值”
+* ReplaySubject 
+    ReplaySubject可以提供n个最近的值。
+这儿我们需要在页面（Component）销毁时取消订阅，那么我们利用生命周期的OnDestroy来完成。
+```typescript
+  ngOnDestroy(){
+    if(this.subscription !== undefined)
+      this.subscription.unsubscribe();
+  }
+```
+更好的方法请参考Async管道。
+### 12.2 Async管道
+有了这个管道，我们**无需管理**琐碎的**取消订阅**，以及**订阅**了。
+```typescript
+<p>
+{{clock | async}
+</p>
+```
+下面直接上例子
+* 在Service层
+
+```typescript
+//todo.service.ts
+@Injectable()
+export class TodoService {
+  private _todos: BehaviorSubject<Todo[]>;
+  private dataStore: {  // This is where we will store our data in memory
+    todos: Todo[]
+  };
+    constructor(private http: Http, @Inject('auth') private authService) {
+        this.authService.getAuth()
+          .filter(auth => auth.user != null)
+          .subscribe(auth => this.userId = auth.user.id);
+        this.dataStore = { todos: [] };
+        this._todos = new BehaviorSubject<Todo[]>([]);
+      } 
+  get todos(){
+    return this._todos.asObservable();
+  }
+  // POST /todos
+  addTodo(desc:string){
+    let todoToAdd = {
+      id: UUID.UUID(),
+      desc: desc,
+      completed: false,
+      userId: this.userId
+    };
+    this.http
+      .post(this.api_url, JSON.stringify(todoToAdd), {headers: this.headers})
+      .map(res => res.json() as Todo)
+      .subscribe(todo => {
+        this.dataStore.todos = [...this.dataStore.todos, todo];
+        this._todos.next(Object.assign({}, this.dataStore).todos);
+      });
+  }
+}
+//todo.component.ts
+@Component({
+  templateUrl: './todo.component.html',
+  styleUrls: ['./todo.component.css']
+})
+export class TodoComponent implements OnInit {
+
+  todos : Observable<Todo[]>;
+    constructor(
+      @Inject('todoService') private service,
+      private route: ActivatedRoute,
+      private router: Router) {}
+  
+    ngOnInit() {
+      this.route.params
+        .pluck('filter')
+        .subscribe(filter => {
+          this.service.filterTodos(filter);
+          this.todos = this.service.todos;
+        })
+    }
+  addTodo(desc: string) {
+    this.service.addTodo(desc);
+  }
+```
+我们组件(todo.component.ts)中的todos变成了一个Observable，在构造是直接把Service的属性方法todos赋值上去了。这样改造后，我们只需改动模板的两行代码就大功告成了，那就是替换原有的="todos..."为
+="todos | async"。请注意这个通道(Pipe)是需要直接应用于Observable的，也就是说如果我们要显示todos.length，我们应该写成(todos|async).length。
+相对应的模板(todo.component.html)片段如下：
+```typescript
+<div>
+  <app-todo-header
+    placeholder="What do you want"
+    (onEnterUp)="addTodo($event)" >
+  </app-todo-header>
+  <app-todo-list
+    [todos]="todos | async"
+    (onToggleAll)="toggleAll()"
+    (onRemoveTodo)="removeTodo($event)"
+    (onToggleTodo)="toggleTodo($event)"
+    >
+  </app-todo-list>
+  <app-todo-footer
+    [itemCount]="todos?.length | async"
+    (onClear)="clearCompleted()">
+  </app-todo-footer>
+</div>
+```
+
+## 13. redux
+应用开发中，UI上显示的数据，控件状态，登陆状态等等全部可以看作是状态。应用程序开发中最复杂的部分就在于这些状态的管理。
+Redux提出了几个概念：Store,Reducer,Action
+
+* Store
+Store是一个应用内的数据（状态）中心。Store在Redux中有一个基本原则：他是一个“唯一的，状态不可修改”的树，状态的更新只能通过显性定义的Action发送后触发。
+Store中一般负责：保存应用状态，提供访问状态的方法，派发Action的方法以及对于状态订阅者的注册和取消等。
+
+* Reducer
+Reducer的作用是接收一个状态和对应的处理(Action)，进行处理后返回一个新状态。
+Reducer是一个纯JavaScript函数，接收2个参数：第一个参数是处理之前的状态，第二个参数是一个可能携带数据的动作(Action)。
+Reducer的TypeScript定义为：
+```typescript
+export interface Reducer<T> {
+    (state: T, action:Action): T;
+}
+```
+* Action
+Action让Redux和Store之间通信。在Redux规范中，所有会引发状态更新的交互行为都必须通过一个显性定义的Action来进行。
+Action的TypeScript定义为：
+```typescript
+export interface Action{
+    type: string;
+    payload?: any;
+}
+```
+
+ngrx是一套利用RxJS的类库，其中的@ngrx/store(https://github.com/ngrx/store)就是基于Redux规范指定的Angular2框架。
+
+### 13.1 利用方法
+* 在项目根目录下安装npm install @ngrx/core @ngrx/store --save。
+* 在CoreModule中引入StoreModule,StoreDevtoolsModule
+```typescript
+import { StoreModule } from '@ngrx/store';
+import { todoReducer, todoFilterReducer } from '../reducers/todo.reducer';
+import { authReducer } from '../reducers/auth.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+@NgModule({
+  imports:[
+    HttpModule,
+    StoreModule.provideStore({ 
+      todos: todoReducer, 
+      todoFilter: todoFilterReducer,
+      auth: authReducer
+    }),
+    StoreDevtoolsModule.instrumentOnlyWithExtension()
+  ],
+```
+* 而后定义自己的todoReducer和todoFilterReducer
+* 在组件中引入Store,并且在适当的时候dispatch ADD_TODO这个Action就OK了。
+```typescript
+import { Store } from '@ngrx/store';
+export class TodoComponent {
+
+  todos : Observable<Todo[]>;
+
+  constructor(
+    private service: TodoService,
+    private route: ActivatedRoute,
+    private store$: Store<AppState>) {
+      const fetchData$ = this.service.getTodos()
+        .flatMap(todos => {
+          this.store$.dispatch({type: FETCH_FROM_API, payload: todos});
+          return this.store$.select('todos')
+        })
+        .startWith([]);
+```
