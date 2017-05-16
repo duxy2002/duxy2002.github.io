@@ -235,7 +235,7 @@ Angular2中的指令分成三种：
                   </div>
                 </form>
              ```
-            [formGroup]="form"中的form就是定义在component中的form。而 formControlName="password"就是component中form里面定义的password.formGroupName="passwords"对应的是form中的passwords. 
+         [formGroup]="form"中的form就是定义在component中的form。而 formControlName="password"就是component中form里面定义的password.formGroupName="passwords"对应的是form中的passwords. 
         
         
      
