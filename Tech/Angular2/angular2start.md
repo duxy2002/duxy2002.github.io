@@ -83,11 +83,20 @@
 ### 组件和视图(View)
  
  **组件**负责控制屏幕上的一小块区域（称为“**视图**”）
- 
+
 
 
     
 ## 4.指令(Directives)
+Angular2中的指令分成三种：
+* 结构型(Structural)指令
+    * ngIf
+    * ngFor
+    * ngSwitch/ngSwitchCase/ngSwitchDefault
+* 属性型(Attribute)指令
+    * ngModel
+    * ngClass
+* Component
 
 ## 5.模板(Templates)
  1. (eventName)
@@ -101,50 +110,156 @@
 
 ## 8.数据绑定(Data Binding)
 
- 1. 给控件加引用(reference)  
-    例如下面的#usernameRef。如果想传递input的值，可以用usernameRef.value.
+ 1. ~~给控件加引用(reference)~~  
+    ~~例如下面的#usernameRef。如果想传递input的值，可以用usernameRef.value.~~
         
         <input #usernameRef type="text">
         <button (click)="onClick(usernameRef.value)">Login</button>
         
- 2. 双向数据绑定
-    方括号[]的作用是说把等号后面当成表达式来解析而不是当成字符串。它的含义是单向绑定，就是说我们在组件中给model赋值会设置到HTML的input控件中。
-    [()]是双向绑定的意思，就是说HTML对应控件的状态改变会反射设置到组件的model中。ngModel是FormModel中提供的指令，它负责从Domain Model中创建一个FormControl的实例，并将这个实例和表单的控件绑定起来。  
+ 2. ~~双向数据绑定~~
+    ~~方括号[]的作用是说把等号后面当成表达式来解析而不是当成字符串。它的含义是单向绑定，就是说我们在组件中给model赋值会设置到HTML的input控件中。~~
+    ~~\[()]是双向绑定的意思，就是说HTML对应控件的状态改变会反射设置到组件的model中。ngModel是FormModel中提供的指令，它负责从Domain Model中创建一个FormControl的实例，并将这个实例和表单的控件绑定起来。~~  
 
     ```typescript
         <input type="text" [(ngModel)]="username"
     ```  
         
-    有了[()]就不需要1.的usernameRef.value了。
- 3. 表单数据的验证  
+    ~~有了\[()]就不需要1.的usernameRef.value了。~~
+ 3. ~~表单数据的验证~~  
 
-```typescript
-    <input required type="text" [(ngModel)]="username" #usernameRef="ngModel"/>
-    <div *ngIf="usernameRef.errors?.required">this is required</div>
-```
-这儿的#usernameRef="ngModel"和1.的#usernameRef都是引用，但是这次的引用指向了ngModel，这个引用时要在模板中使用的，所以才加入这个引用。
+    ```typescript
+        <input required type="text" [(ngModel)]="username" #usernameRef="ngModel"/>
+        <div *ngIf="usernameRef.errors?.required">this is required</div>
+    ```
+~~这儿的#usernameRef="ngModel"和1.的#usernameRef都是引用，但是这次的引用指向了ngModel，这个引用时要在模板中使用的，所以才加入这个引用。~~
 
+
+### 8.1 响应式表单
+响应式表单意味着我们不会使用ngModel，required等其他的类似的指令来帮助我们完成绑定和验证等动作。也就是说我们希望自己对表单（Form）有完全的控制，而不是像1.2.3做的那样。
+响应式表单有两个明显优点
+* 可以让我们将所有处理的逻辑放在一起，而不是像非响应式表单那样，验证在网页模板中，绑定在模板中，逻辑处理在组件中等等。
+* 更大的灵活性，因为我们可以从头到脚的控制表单，而不是依赖某些内建的机制（虽然那些机制优势会给你很多便利之处，但一旦你的需求变复杂时，它就无法满足你了。）
+
+    1. 在我们可以使用ReactiveForms前，首先要告诉@NgModule引入。注意：平时使用时如果要时间模板驱动型表单需要引入FormModule，而相应式表单需要引入ReactiveForms。
+        ```typescript
+         //login.module.ts
+          import { ReactiveFormsModule } from '@angular/forms';
+          @NgModule({
+            imports: [
+              ....,
+              ReactiveFormsModule
+            ],
+            declarations: [... ],
+            entryComponents: [RegisterDialogComponent],
+            providers: [....]
+            })
+           export class LoginModule { }
+         ```
+       
+     > entryComponents: [RegisterDialogComponent],是什么意思？
+     
+     2. 表单控件和表单组,表单构造器
+        1. 在组件中import下面的类  
+             ```typescript
+             //login.module.ts
+            import {
+              FormGroup,
+              Validators,
+              FormControl,
+              FormBuilder
+            } from '@angular/forms';
+             ```
+         2. 而后在constructor方法中假如下面的代码
+             ```typescript
+             //register.component.ts
+                public form: FormGroup;
+                ....
+                  constructor(
+                    private dialog: MdlDialogReference,
+                    private fb: FormBuilder,
+                    private router: Router,
+                    @Inject('auth') private authService) {
+                      this.form = fb.group({
+                        'username':  new FormControl('',  Validators.required),
+                        'passwords': fb.group({
+                          'password': new FormControl('', Validators.required),
+                          'repeatPassword': new FormControl('', Validators.required)
+                        },{validator: this.passwordMatchValidator})
+                      });
+             ```
+          也就是说通过构造函数注入FormBuilder,我们得到表单构造器。
+          3. 相对应的HTML如下
+             ```html
+               //register.component.html
+                <form [formGroup]="form">
+                  <h3 class="mdl-dialog__title">Register</h3>
+                  <div class="mdl-dialog__content">
+                    <mdl-textfield
+                      #firstElement
+                      type="text"
+                      label="Username"
+                      formControlName="username"
+                      floating-label>
+                    </mdl-textfield>
+                    <br/>
+                    <div formGroupName="passwords" #passwordsRef>
+                      <mdl-textfield
+                        type="password"
+                        label="Password"
+                        formControlName="password"
+                        floating-label>
+                      </mdl-textfield>
+                      <br/>
+                      <mdl-textfield
+                        type="password"
+                        label="Repeat Password"
+                        formControlName="repeatPassword"
+                        floating-label>
+                      </mdl-textfield>
+                    </div>
+                  </div>
+                  <div class="status-bar">
+                    <p class="mdl-color-text--primary">{{statusMessage}}</p>
+                    <mdl-spinner [active]="processingRegister"></mdl-spinner>
+                  </div>
+                  <div class="mdl-dialog__actions">
+                    <button
+                      type="button"
+                      mdl-button
+                      (click)="register()"
+                      [disabled]="!form.valid || processingRegister"
+                      mdl-button-type="raised"
+                      mdl-colored="primary" mdl-ripple>
+                      Register
+                    </button>
+                  </div>
+                </form>
+             ```
+            [formGroup]="form"中的form就是定义在component中的form。而 formControlName="password"就是component中form里面定义的password.formGroupName="passwords"对应的是form中的passwords. 
+        
+        
+     
 ## 9. 路由(routing)
 
 1. 在src/index.html中指定基准路径，即在\<header>中加入\<base href="/">,它指向你的index.html所在的路径，浏览器也会根据这个路径下载css,图像和js文件，所以请将这个语句放在header的最顶端
 2. 在src/app/app.module.ts中引入RouterModule:
 
-```typescript
-import {RouterModule} from '@angular/router';
-```
+    ```typescript
+    import {RouterModule} from '@angular/router';
+    ```
 3. ~~而后在imports中定义和配置路由数组。~~
 
-```typescript
-imports: [
- BrowserModule,
- Forms,
- HttpModule,
- RouterModule.forRoot([
-     path: 'login',
-     component: LoginComponent
- ])
- ]
-```
+    ```typescript
+    imports: [
+     BrowserModule,
+     Forms,
+     HttpModule,
+     RouterModule.forRoot([
+         path: 'login',
+         component: LoginComponent
+     ])
+     ]
+    ```
 
 forRoot其实是一个静态工厂方法，它返回的仍然是Module。因为这个路由定义是应用在应用根部的。
 
@@ -233,3 +348,105 @@ imports:[
 注意：这个时候其实没有任何一个地方还需要引用<app-todo></app-todo>了，这就是说我们可以安全地把selector:'app-todo'，从Todo组件中的@Component修饰符中删除了。
 
 >也就是说子模块中的父组件不需要selector?
+
+页面迁移的方法：
+this.router.navigate(['todo'])
+
+
+## 9.2 路由守卫
+路由器支持多种守卫
+* 用CanActivate来处理导航到某路由的情况。
+* 用CanActivateChild处理导航到子路由的情况。
+* 用CanDeactivate来处理从当前路由离开的情况。
+* 用Resolve在路由激活之前获取路由数据。
+* 用CanLoad来处理异步导航到某特性模块的情况。
+在分层路由的每个级别上，我们都可以设置多个守卫。路由器会先按照从最深的子路由由下往上检查的顺序来检查CanDeactivate守护条件。然后他会按照从上到下的顺序检查CanActivate守卫。如果任何守卫返回false，其他尚未完成的守卫会被取消，这样整个导航就被取消了。
+
+> 用户权限检查可以在这儿做。
+### 9.3 异步路由
+loadChildren
+
+
+## 10.动画
+在添加动画之前，先引入一些与动画有关的类库
+```typescript
+//login.component.ts
+import {
+    Component,
+    Inject,
+    trigger,
+    state,
+    style,
+    transition,
+    animate,
+    OnDestroy
+} from '@angular/core';
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
+  animations: [
+    trigger('loginState', [
+      state('inactive', style({
+        transform: 'scale(1)'
+      })),
+      state('active',   style({
+        transform: 'scale(1.1)'
+      })),
+      transition('inactive => active', animate('100ms ease-in')),
+      transition('active => inactive', animate('100ms ease-out'))
+    ])
+  ]
+})
+export class LoginComponent implements OnDestroy {
+    
+}
+```
+我们通过上面的方法定义了一个动画，要想使用它，可以在模板中用[@triigerName]="xxx""的形式来把它附加到一个或多个元素上。
+```html
+//login.component.html
+    <button
+      mdl-button mdl-button-type="raised"
+      mdl-colored="primary"
+      mdl-ripple type="submit"
+      [@loginState]="loginBtnState"
+      (mouseenter)="toggleLoginState(true)"
+      (mouseleave)="toggleLoginState(false)">
+      Login
+    </button>
+```
+这里我们对Login这个按钮应用了loginState触发器，并且绑定这个触发器的状态值到一个成员变量**loginBtnState**。而且我们定义了在鼠标进入按钮区域和离开按钮区域时应该通过一个函数toggleLoginState来改变loginBtnState的值。在LoginComponent中定义这个方法即可。
+* 假如不想是一个成员变量。我们可以直接定义为[@loginState]="'**'inactive'**"，也就是说用''把实际值包含。
+* 假如在组件中没有给loginBtnState附上初始值，那么动画处于void状态(空状态)，这个时候我们可以通过下面的方法定义给没有初始值时的动画。
+
+```typescript
+  animations: [
+    trigger('loginState', [
+      state('void', style({
+        transform: 'scale(1)'
+      })),
+      ......
+```
+
+## 11.Anguar2的组件声明周期  
+
+* ngOnChanges 组件和指令  
+    在ngInit之前触发，当Angular设置数据绑定属性或输入性属性时会得到一个包含当前和之前属性值的对象（SimpleChanges)
+* ngOninit  组件和指令
+    只调用一次，在设置完输入性属性后，通过这个函数初始化组件或指令。
+* ngDoCheck 组件和指令
+    在ngInit之后，每次检测到变化时触发，可以在此检查一下angular自身无法检查的变化。
+* ngAfterContentInit 组件
+    在ngDoCheck后触发，只调用一次，把要装载到组件视图的内容初始化。
+* ngAfterContentChecked 组件 
+    ngAfterContentInit之后每次ngDoCheck都会在之后触发ngAfterContentChecked，对要装载到组件视图的内容进行检查。
+* ngAfterViewInit  组件
+    在第一个ngAfterContentInit被调用后触发，只调用一次，在angular初始化视图后相应。
+* ngAfterViewChecked 组件
+    在ngAfterViewInit后以及每个ngAfterContentChecked后触发。
+* ngOnDestroy 组件和指令
+    在组件或指令被销毁前，清理环境，可以在此处取消Observable的订阅。
+    
+
+
+
