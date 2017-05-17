@@ -11,6 +11,12 @@
 * 应该为每个模块建立独立的路由文件。
 * 在RxJS领域，一般在Observable类型的变量后面加上$标识，这时一个“流变量“（由英文Stream得来，Observable就是一个Stream，所以用$标识）
 * 组件中不处理事务逻辑，只负责调用服务的方法。服务中只负责提交数据到服务器和发送动作。所有的应用程序状态都是通过Redux处理的。
+* 用来定义元素上绑定的内容使用方括号
+  推荐：<input \[value]="foo">
+  不推荐：<input bind-value="foo">
+  推荐：<button (click)="handle()">Click me</button>
+  不推荐：<button on-click="handle()">Click me</button>
+*
 
 ## 3.关于模块的最佳实践
 ### 3.1 共享特性模块

@@ -40,3 +40,10 @@ npm install --save-dev webpack
 これでWebpackを使用するための準備が整いました。
 
 
+#webpack.config.js
+Webpack的配置文件。
+主要的配置参数说明如下：
+* entry: 页面入口文件配置，可以使一个或者多个入口文件；
+* output：对应输出项配置，即输出入口文件编译后的文件；
+* resolve：定义了解析模块路径时的配置，常用的是extensions，可以用来指定模块的后缀，这样在引入模块时就不需要些后缀，它会自动补全。
+* module.loaders: 它是最关键的配置项，它告知Webpack每一类文件都需要使用什么加载器来处理。

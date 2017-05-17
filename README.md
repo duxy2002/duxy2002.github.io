@@ -12,6 +12,11 @@
 * [How to debug AngularJS with Intellij](Tech/Angular2/debug.md)
 * [Angular2 入门](./Tech/Angular2/angular2start.md)
 * [Angular2 命名规则及最佳实践](./Tech/Angular2/Convertion.md)
+* [Angular的依赖包管理 package.json](./Tech/Angular2/package.json.md)
+
+### Typescript
+ * [Immutable.js 不可变数据结构](./Tech/TypeScript/Immutable.md)
+ * [tsconfig.json的格式](./Tech/TypeScript/tsconfig.json.md)
 ## 3. Tools
 
 * [JekyII/Dexy](./Tools/JekyIIAndDexy.md)
@@ -19,6 +24,7 @@
 * [Grunt/Gulp/Webpack]
 * 设计工具[Axure/Sketch/<strong>Quartz Composer</strong>]
 * [npm](./Tools/npm.md)
+* [Node.js](./Tools/Node.md)
 
 
 ## 4. 各种遇到的问题

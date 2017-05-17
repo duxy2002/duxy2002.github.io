@@ -79,24 +79,80 @@
   对于子模块而言，它们不需要重新初始化全应用级别的提供商（也就是说app.module.ts中的providers)
   
 ## 3. 组件(Components)
+所有组件的输出内容都必须是EventEmitter的实例。
+在Angular2语境下，直接定义在组件模板里面子标签叫做view children(视图子节点)，内嵌在标签中的子标签叫做content children(内容子节点)。
+父子组件通信的过程中，模板充当类似于桥梁的角色，连接着二者的功能逻辑。
 
-### 组件和视图(View)
+###3.1 组件和视图(View)
  
  **组件**负责控制屏幕上的一小块区域（称为“**视图**”）
 
+脏值检测机制运行的上下文是独立的组件。分区会拦截浏览器发出的所有异步请求，并为框架的脏值检测机制提供执行上下文。
+注意：只有组件才会绑定脏值检测器实例，而Directive会使用它们所属Component上的检测器。
 
+### 3.2 脏值检测策略
+* CheckOnce
+* Checked
+* CheckAlways
+   默认会使用这个。
+* Detached
+* Default
+* OnPush
+  可以利用不可变数据和OnPush策略提升性能。当组件产生的结果只和它的输入参数有关的时候，这种策略非常有用。
 
     
 ## 4.指令(Directives)
+与组件相反，指令没有对应的视图和模板。
+Angular2引入了一些更加简单地约定并且内置到了框架里面：
+* propertyName=“value”
+  value是一个字符串字面量。Angular不会对这个值做进一步处理，这个值在模板里面是什么样就会怎么样去使用。
+* \[propertyName]="expression"
+  将会提示Angular2这个属性的值应该当成表达式来处理。当Angular2发现属性包围在方括号内部时，就会尝试去执行这个表达式，执行时的上下文就是模板所对应的组件。
+* (eventName)="handler()" 
+* <td \[class.completed]=""todo.completed"></td>
+  假如todo.complted是true的话，那么上面这句话会变成<td class="completed"></td>
+* <td \[attr.colspan]="colspanCount""></td>
+  假如colspanCount的值是2的话，那么上面这句话会变成<td colspan="2"></td>
+* <td \[style.backgroundImage="expression"></td>
+  假如expresssion是1.bmp的话，那么上面这句话会变成<td style="backgroundImage:1.bmp"></td>
 Angular2中的指令分成三种：
 * 结构型(Structural)指令
     * ngIf
     * ngFor
+      ngForOf属性外面包着一个方括号。乍一看方括号貌似不是合法的HTML语法。但是根据HTML规范，方括号可以用在标签的属性名里面。
+      ```typescript
+        <template ngFor var-todo [ngForOf]="todos">
+          <li>{{todo}}</li>
+        </tempalte>
+      ```
+      我们通过var-tdo这种语法来告诉Angular:我们需要创建一个新的变量叫做todo。不过Angular2提供了一个更简便的语法糖：我们可以用#toto来代替var-todo.
     * ngSwitch/ngSwitchCase/ngSwitchDefault
 * 属性型(Attribute)指令
     * ngModel
     * ngClass
 * Component
+
+###4 .1.自定义管道
+我们可以使用ES2015装饰器@Pipe来创建一个新的管道。这个装饰器可以通过添加元数据的方式把类声明为一个管道。我们唯一要做的事情就是给管道一个名字并定义好数据格式化逻辑。
+```typescript
+@Pipe({name: 'lowercasel'})
+class LowerCasePipe1 implements  PipeTransform {
+    transform(value: string) : string {
+        if (!value) return value;
+        if (typeof value != 'string') {
+            throw new Error('Invalid pipe value', value);
+        }
+        return value.toLocaleLowerCase();
+    }
+}
+
+@Component({
+selector: 'app',
+declarations: [LowerCasePipe1],
+template: '<h1>{{“SAMPLE" | lowercase1 }}</h1>'
+})
+class App{}
+```
 
 ## 5.模板(Templates)
  1. (eventName)
@@ -105,9 +161,10 @@ Angular2中的指令分成三种：
         <buttong (click)="onClick()">Login</button>。
 
 ## 6.依赖注入(Dependency Injection)
+注入到组件里的服务只能使用在该组件机器子组件上，而注入到模块里的服务在整个应用里均能使用，因为所有模块都共享着同一个应用级别的根注入器。
 
 ## 7.服务(Service)
-
+@Injectable()表示ContactService需要注入它所依赖的其他服务（如HTTP服务）
 ## 8.数据绑定(Data Binding)
 
  1. ~~给控件加引用(reference)~~  
@@ -241,6 +298,7 @@ Angular2中的指令分成三种：
      
 ## 9. 路由(routing)
 
+导航操作，URL变更，加载合适的模板，以及在视图加载完成后调用特定逻辑，与这些内容相关的职责都交给路由组件来承担。
 1. 在src/index.html中指定基准路径，即在\<header>中加入\<base href="/">,它指向你的index.html所在的路径，浏览器也会根据这个路径下载css,图像和js文件，所以请将这个语句放在header的最顶端
 2. 在src/app/app.module.ts中引入RouterModule:
 
