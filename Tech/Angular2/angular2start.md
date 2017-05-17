@@ -145,7 +145,7 @@ class LowerCasePipe1 implements  PipeTransform {
         return value.toLocaleLowerCase();
     }
 }
-git
+
 @Component({
 selector: 'app',
 declarations: [LowerCasePipe1],
