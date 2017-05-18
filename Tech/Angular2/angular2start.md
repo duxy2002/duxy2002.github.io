@@ -576,9 +576,7 @@ input$.map(ev=>ev.target.value).subscribe(value=>console.log(value));
 ### 12.2 Async管道
 有了这个管道，我们**无需管理**琐碎的**取消订阅**，以及**订阅**了。
 ```typescript
-<p>
-{{clock | async}
-</p>
+clock | async
 ```
 下面直接上例子
 * 在Service层
