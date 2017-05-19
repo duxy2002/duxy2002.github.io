@@ -17,11 +17,12 @@
 ### Typescript
  * [Immutable.js 不可变数据结构](./Tech/TypeScript/Immutable.md)
  * [tsconfig.json的格式](./Tech/TypeScript/tsconfig.json.md)
+ 
 ## 3. Tools
 
 * [JekyII/Dexy](./Tools/JekyIIAndDexy.md)
 * [npm/Bower](./Tools/npmAndBowser.md)
-* [Grunt/Gulp/Webpack]
+* [Webpack](./Tools/Webpack.md)
 * 设计工具[Axure/Sketch/<strong>Quartz Composer</strong>]
 * [npm](./Tools/npm.md)
 * [Node.js](./Tools/Node.md)
@@ -45,3 +46,13 @@
 
 ### 4.6 Angular2
 * [ng build --prod: Cannot find module css-loader/index.js?sourcemap&minimize](Problem/Angular2/ngbuild.md)
+
+
+## 5. 名词解释
+* polyfill
+Polyfillとは、古いブラウザであってもモダンブラウザと同等の機能を提供する方法のこと。
+古いブラウザはHTML5やCSS3などの新しい仕様を実装していませんが、独自実装などを利用して極力モダンブラウザと同じ実装をいくつか実現させています。
+olyfillを作成するのはブpラウザなどの実装に知悉してなければなりませんので、多くは有名なライブラリ(Modernizr、html5shiv)などを利用して実現します。
+
+## 6.IDE
+* [IntelliJ Idea]
