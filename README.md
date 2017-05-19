@@ -55,4 +55,4 @@ Polyfillとは、古いブラウザであってもモダンブラウザと同等
 olyfillを作成するのはブpラウザなどの実装に知悉してなければなりませんので、多くは有名なライブラリ(Modernizr、html5shiv)などを利用して実現します。
 
 ## 6.IDE
-* [IntelliJ Idea]
+* [IntelliJ Idea](./IDE/IntelliJIdea/IntelliJIdea.md)
