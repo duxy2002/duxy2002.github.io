@@ -1,4 +1,6 @@
 # Webpack
+官网上中文翻译：https://doc.webpack-china.org/plugins/html-webpack-plugin/
+重要参考URL:https://github.com/webpack-contrib/awesome-webpack
 
 ## Webpack是什么？
 
@@ -55,6 +57,14 @@ npm install --save-dev webpack
 ```
 これでWebpackを使用するための準備が整いました。
 
+##监视模式
+webpack 的 watch mode 会监视文件的更改。如果检测到任何的更改，它都会再次执行编译。
+
+我们也希望在编译时有一个好看的进度条。运行以下命令：
+```
+webpack --progress --watch
+```
+在你的文件中做一点更改并且保存。你应该会看到 webpack 正在重新编译。
 
 ## webpack.config.js
 Webpack的配置文件。
@@ -196,7 +206,7 @@ module.exports = {
 ```
 
 ## Plugins列表
-* [write-file-webpack-plugin](https://github.com/gajus/write-file-webpack-plugin
+* [write-file-webpack-plugin](https://github.com/gajus/write-file-webpack-plugin)
 Forces webpack-dev-server to write bundle files to the file system.
     * Usage  
     Configure webpack.config.js to use the write-file-webpack-plugin plugin.
@@ -215,6 +225,22 @@ Forces webpack-dev-server to write bundle files to the file system.
     }
     ```
 * webpack-dev-server
+
+webpack-dev-server 为你提供了一个服务器和实时重载（live reloading） 功能。这很容易设置。
+
+在开始前，确定你有一个 index.html 文件指向你的 bundle。假设 output.filename 是 bunlde.js。
+```
+<script src="/bundle.js"></script>
+```
+首先从 npm 安装 webpack-dev-server：
+```
+npm install --save-dev webpack-dev-server
+```
+安装完成之后，你应该可以使用 webpack-dev-server 了，方式如下：
+```
+webpack-dev-server --open
+```
+
 通常の webpack コマンドも --watch （または -w）オプションつきで実行することにより
 ファイルの変更を検知して自動でリビルドを行うことが可能ですが、
 webpack-dev-server は上記に加えて
@@ -223,6 +249,8 @@ webpack-dev-server は上記に加えて
     * ファイルの変更を検知して自動ビルドした後、ブラウザも自動的にリロードしてくれる（Automatic Refresh）
     * ブラウザ全体のリロードではなく、編集したモジュールのみを更新する Hot Module Replacement という仕組みが使える（後述）
 といった機能を備えているため、ローカルで開発する分にはこちらを使う方が便利です。
+
+
 
 webpack-dev-server も webpack を実行した時と同じく webpack.config.js の内容を読み込み、ビルドを行います。
 同時に、ローカルサーバーを起動し（デフォルトで）http://localhost:8080 または http://localhost:8080/webpack-dev-server/ からアクセス可能になります。
@@ -237,7 +265,10 @@ webpack-dev-server --hotによりmodule.hotがtrueにされますが、これは
 * ExtractTextWebpackPlugin
 webpack 能够用 ExtractTextWebpackPlugin 帮助你将 CSS 单独打包。
 
+# Tree Shaking
+Tree shaking 是一个术语，通常用来描述移除 JavaScript 上下文中无用代码这个过程，或者更准确的说是按需引用代码，它依赖于 ES2015 模块系统中 import/export 的静态结构特性。这个术语和概念实际上是兴起于 ES2015 模块打包工具 rollup。
 
 ## QA
 1. chunk代表什么含义
 2. webpack.config.ts文件里面module.rules下面可以有loaders？
+3. 是不是把Idea的safe write去掉以后，我们的修改就能实时反映到chrome中

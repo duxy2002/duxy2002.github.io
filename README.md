@@ -23,10 +23,12 @@
 * [JekyII/Dexy](./Tools/JekyIIAndDexy.md)
 * [npm/Bower](./Tools/npmAndBowser.md)
 * [Webpack](./Tools/Webpack.md)
+* [webpack和TypeScript]()
 * 设计工具[Axure/Sketch/<strong>Quartz Composer</strong>]
 * [npm](./Tools/npm.md)
 * [Node.js](./Tools/Node.md)
-
+* electron
+* [gradle]
 
 ## 4. 各种遇到的问题
 ### 4.1 Git
