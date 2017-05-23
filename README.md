@@ -28,7 +28,7 @@
 * [npm](./Tools/npm.md)
 * [Node.js](./Tools/Node.md)
 * electron
-* [gradle]
+* [gradle](./Tools/gradle.md)
 
 ## 4. 各种遇到的问题
 ### 4.1 Git
