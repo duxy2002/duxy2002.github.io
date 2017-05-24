@@ -6,7 +6,7 @@
 
 ## 2. 技术调查
 
-### Angular2
+### 2.1 Angular2
 
 * [如何引入第三方类库](Tech/Angular2/thirdPackage.md)
 * [How to debug AngularJS with Intellij](Tech/Angular2/debug.md)
@@ -14,10 +14,16 @@
 * [Angular2 命名规则及最佳实践](./Tech/Angular2/Convertion.md)
 * [Angular的依赖包管理 package.json](./Tech/Angular2/package.json.md)
 
-### Typescript
+### 2.2 Typescript
  * [Immutable.js 不可变数据结构](./Tech/TypeScript/Immutable.md)
  * [tsconfig.json的格式](./Tech/TypeScript/tsconfig.json.md)
  
+### 2.3 JHipster
+* [JHipster](./Tech/JHipster/JHipster.md)
+
+### 2.4 JPA
+* [JPA](./Tech/JPA/)
+
 ## 3. Tools
 
 * [JekyII/Dexy](./Tools/JekyIIAndDexy.md)
@@ -29,10 +35,12 @@
 * [Node.js](./Tools/Node.md)
 * electron
 * [gradle](./Tools/gradle.md)
+* DB重构工具[LiquiBase](./Tools/LiquiBase.md)
 
 ## 4. 各种遇到的问题
 ### 4.1 Git
 * [SSL certificate problem: self signed certificate](./Problem/Git/SelfSignedCertificate.md)
+* [checkout tag](././Problem/Git/CheckoutTag.md)
 
 ### 4.2 npm
 
