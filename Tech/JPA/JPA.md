@@ -222,3 +222,13 @@ List<Emp> emps = repository.findAll(where(idLessThanOrEqualTo(9L)).and(hasDept(D
 ```
 とかいうふうに使えます。
 
+## 结合
+### 1:1
+* エンティティ間の多重度が１対１で、関連の向きが単方向の場合は、特に何も指定することなくマッピングすることができる。
+* ただし、結合に用いられるカラム名が、デフォルトでは フィールド名_相手のキーカラム名 で解決される（okazakiYumemi_id）ので、 @JoinColumn アノテーションを使って結合に用いるカラム名を明示している。
+* デフォルトのフェッチ方法は EAGER になる。これを変更したい場合は、 @OneToOne(fetch = FetchType.LAZY) の指定を追加する。
+
+
+
+## 参考网站
+http://qiita.com/opengl-8080/items/265f9f66a65e966678cb

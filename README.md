@@ -22,10 +22,18 @@
 * [JHipster](./Tech/JHipster/JHipster.md)
 
 ### 2.4 JPA
-* [JPA](./Tech/JPA/)
+* [JPA](./Tech/JPA/JPA.md)
+* [JPA BestPractise](./Tech/JPA/JPABP.md)
+
+### 2.5 SpringBoot
+* [AuditEventRepository](./Tech/SpringBoot/AuditEventRepository.md)
+
+### 2.6 Java8
+* [日期处理](./Tech/Java/8/date.md)
 
 ## 3. Tools
 
+### 3.1 FrontEnd
 * [JekyII/Dexy](./Tools/JekyIIAndDexy.md)
 * [npm/Bower](./Tools/npmAndBowser.md)
 * [Webpack](./Tools/Webpack.md)
@@ -34,8 +42,13 @@
 * [npm](./Tools/npm.md)
 * [Node.js](./Tools/Node.md)
 * electron
+
+### 3.2 BackEnd
+
 * [gradle](./Tools/gradle.md)
 * DB重构工具[LiquiBase](./Tools/LiquiBase.md)
+* [Metrics]()
+* [dropwizard](http://metrics.dropwizard.io/3.2.2/)
 
 ## 4. 各种遇到的问题
 ### 4.1 Git
