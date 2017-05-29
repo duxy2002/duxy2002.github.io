@@ -363,7 +363,7 @@ imports: [
 ```typescript
 //src/app/todo/todo.module.ts
 import {routing} from './todo/routes';
-import {TodoComponent} from ',/todo.component';
+import {TodoComponent} from './todo.component';
 .....
 @NgModule({
  imports: [
@@ -376,7 +376,7 @@ import {TodoComponent} from ',/todo.component';
  ]
 })
 export class TodoModule{}
-
+  
 //todo.routes.ts
 import {Route, RouterModule} from '@angular/router';
 import {TodoComponent} from ',/todo.component';
@@ -385,7 +385,7 @@ export const routes: Routes = [{
         component: TodoComponent
 }];
 export const routing:ModuleWithProviders = RouterModule.forChild(routes);
-
+  
 //app.routes.ts
 export const routes: Routes =[ {
   path： ‘todo'',
@@ -393,6 +393,7 @@ export const routes: Routes =[ {
 }];
 export const routing = RouteModule.forRoot(routes);
 
+  
 //app.module.ts
 
 @NgModule({
@@ -405,7 +406,62 @@ imports:[
 
 注意：这个时候其实没有任何一个地方还需要引用<app-todo></app-todo>了，这就是说我们可以安全地把selector:'app-todo'，从Todo组件中的@Component修饰符中删除了。
 
->也就是说子模块中的父组件不需要selector?
+另外假如是在一个模块之中，那么子路由的定义方式为：
+```typescript
+
+//admin.module.ts
+@NgModule({
+    imports: [
+        BlogSharedModule,
+        RouterModule.forRoot(adminState, { useHash: true }),
+        /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
+    ],
+
+//user-management.route.ts
+export const userMgmtRoute: Routes = [
+    {
+        path: 'user-management',
+        component: UserMgmtComponent,
+        resolve: {
+            'pagingParams': UserResolvePagingParams
+        },
+        data: {
+            pageTitle: 'userManagement.home.title'
+        }
+    },
+    {
+        path: 'user-management/:login',
+        component: UserMgmtDetailComponent,
+        data: {
+            pageTitle: 'userManagement.home.title'
+        }
+    }
+];
+
+
+//admin.route.ts
+const ADMIN_ROUTES = [
+    auditsRoute,
+    configurationRoute,
+    docsRoute,
+    healthRoute,
+    logsRoute,
+    ...userMgmtRoute,
+    metricsRoute
+];
+export const adminState: Routes = [{
+    path: '',
+    data: {
+        authorities: ['ROLE_ADMIN']
+    },
+    canActivate: [UserRouteAccessService],
+    children: ADMIN_ROUTES
+},
+    ...userDialogRoute
+];
+  
+//
+```
 
 页面迁移的方法：
 this.router.navigate(['todo'])
