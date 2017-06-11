@@ -416,7 +416,7 @@ imports:[
         RouterModule.forRoot(adminState, { useHash: true }),
         /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
     ],
-
+  
 //user-management.route.ts
 export const userMgmtRoute: Routes = [
     {
@@ -787,3 +787,23 @@ export class TodoComponent {
         })
         .startWith([]);
 ```
+
+## 反射
+1. 在构造函数中注入Inject
+```typescript
+import { Injector } from '@angular/core';
+import { AuthServerProvider } from '../../shared/auth/auth-session.service';
+export class AuthExpiredInterceptor extends HttpInterceptor {
+
+    constructor(private injector: Injector,
+        private stateStorageService: StateStorageService) {
+        super();
+    }
+```
+
+2. 而后通过注入相对应的类，来反射出相对应的实例
+```typescript
+const authServerProvider = this.injector.get(AuthServerProvider);
+authServerProvider.logout();
+```
+

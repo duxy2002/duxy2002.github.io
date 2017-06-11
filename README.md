@@ -13,6 +13,7 @@
 * [Angular2 入门](./Tech/Angular2/angular2start.md)
 * [Angular2 命名规则及最佳实践](./Tech/Angular2/Convertion.md)
 * [Angular的依赖包管理 package.json](./Tech/Angular2/package.json.md)
+* [Angular父组件和子路由之间传值的方法](./Tech/Angular2/transfer.md)
 
 ### 2.2 Typescript
  * [Immutable.js 不可变数据结构](./Tech/TypeScript/Immutable.md)
