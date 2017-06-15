@@ -18,19 +18,31 @@
 ### 2.2 Typescript
  * [Immutable.js 不可变数据结构](./Tech/TypeScript/Immutable.md)
  * [tsconfig.json的格式](./Tech/TypeScript/tsconfig.json.md)
+
+ ### 2.3 Material Design
+ * [CSS调整](./Tech/Material%20Design/CSS.md)
+
+ ### 2.4 HTTP基本知识
+ * [Expires](./Tech/Http/Expires.md)
+ * [Cache](./Tech/Http/Cache.md)
+ * [Last-Modified/ETag](./Tech/Http/ETag.md)
+ * [HTTP/2](./Tech/Http/Http2.md)
  
-### 2.3 JHipster
+### 2.20 JHipster
 * [JHipster](./Tech/JHipster/JHipster.md)
 
-### 2.4 JPA
+### 2.21 JPA
 * [JPA](./Tech/JPA/JPA.md)
 * [JPA BestPractise](./Tech/JPA/JPABP.md)
 
-### 2.5 SpringBoot
+### 2.22 SpringBoot
 * [AuditEventRepository](./Tech/SpringBoot/AuditEventRepository.md)
-
-### 2.6 Java8
+* [Spring MVC(+Spring Boot)上での静的リソースへのアクセスを理解する](./Tech/SpringBoot/StaticResource.md)
+### 2.23 Java8
 * [日期处理](./Tech/Java/8/date.md)
+
+
+
 
 ## 3. Tools
 
