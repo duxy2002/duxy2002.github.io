@@ -19,10 +19,10 @@
  * [Immutable.js 不可变数据结构](./Tech/TypeScript/Immutable.md)
  * [tsconfig.json的格式](./Tech/TypeScript/tsconfig.json.md)
 
- ### 2.3 Material Design
+### 2.3 Material Design
  * [CSS调整](./Tech/Material%20Design/CSS.md)
 
- ### 2.4 HTTP基本知识
+### 2.4 HTTP基本知识
  * [Expires](./Tech/Http/Expires.md)
  * [Cache](./Tech/Http/Cache.md)
  * [Last-Modified/ETag](./Tech/Http/ETag.md)
