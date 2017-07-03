@@ -3,7 +3,7 @@
 ## 1. 读书笔记
 
 * [《Web全栈工程师的自我修养》的读书笔记](./Books/fullStack.md)
-
+* [《Web安全深度剖析》的读书笔记](./Books/deepWebSecurity.md)
 ## 2. 技术调查
 
 ### 2.1 Angular2
