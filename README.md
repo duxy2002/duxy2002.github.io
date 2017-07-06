@@ -38,11 +38,94 @@
 ### 2.22 SpringBoot
 * [AuditEventRepository](./Tech/SpringBoot/AuditEventRepository.md)
 * [Spring MVC(+Spring Boot)上での静的リソースへのアクセスを理解する](./Tech/SpringBoot/StaticResource.md)
+
 ### 2.23 Java8
 * [日期处理](./Tech/Java/8/date.md)
 
-
-
+### 2.40 Devops
+* 代码管理（SCM）
+    * GitHub
+    * GitLab
+    * BitBucket
+    * SubVersion
+* 构建工具
+    * Ant
+    * Gradle
+    * maven
+* 自动部署
+    * Capistrano
+    * CodeDeploy
+* 持续集成（CI）
+    * Bamboo 
+    * Hudson
+    * Jenkins
+* 配置管理
+    * Ansible
+    * Chef
+    * Puppet
+    * SaltStack
+    * ScriptRock GuardRail
+* 容器：
+    * [Docker](./Devops/Container/Docker/Docker.md)
+    * LXC、
+    * 第三方厂商如AWS
+* 编排
+    * Kubernetes
+    * Core
+    * Apache Mesos
+    * DC/OS
+* 服务注册与发现
+    * Zookeeper
+    * etcd
+    * Consul
+* 日志管理
+    * ELK
+    * Logentries
+* 系统监控
+    * Datadog
+    * Graphite
+    * Icinga
+    * Nagios
+* 性能监控
+    * AppDynamics
+    * New Relic
+    * Splunk
+* 压力测试
+    * JMeter
+    * Blaze Meter
+    * loader.io
+* 预警
+    * PagerDuty
+    * pingdom
+    * 厂商自带如AWS SNS
+* HTTP加速器
+    * Varnish
+* 消息总线
+    * ActiveMQ
+    * SQS
+* 应用服务器
+    * Tomcat
+    * JBoss
+* Web服务器
+    * Apache
+    * Nginx
+    * IIS
+* 数据库
+    * 关系型数据库
+        * MySQL
+        * Oracle
+        * PostgreSQL
+    * NoSQL数据库
+        * cassandra
+        * mongoDB
+        * redis
+* 项目管理（PM）
+    * Jira
+    * Asana
+    * Taiga
+    * Trello
+    * Basecamp
+    * Pivotal Tracker
 
 ## 3. Tools
 
@@ -62,6 +145,9 @@
 * DB重构工具[LiquiBase](./Tools/LiquiBase.md)
 * [Metrics]()
 * [dropwizard](http://metrics.dropwizard.io/3.2.2/)
+
+### 3.3 系统工具
+[cmder.net](http://cmder.net/)
 
 ## 4. 各种遇到的问题
 ### 4.1 Git

@@ -45,7 +45,7 @@ HEAD方法除了服务器不能在响应里返回消息主体外，其他都与G
 * Burp Suite Proxy初体验
 * Fiddler
 
- ## 3. 信息探测
+## 3. 信息探测
  
  * Google Hack
     * site:  指定域名
