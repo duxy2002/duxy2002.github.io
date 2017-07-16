@@ -1,6 +1,6 @@
 # Docker
 ## 安装
-[官方文档](https://docs.docker.com/docker-for-windows/install/#install-docker-for-windows)
+[官方文档](https://docs.docker.com/docker-for-windows/install/DockerStarting.md#install-docker-for-windows)
 
 ## 新的开发流程
 * 开发人员开发，提交代码到代码服务器（Github，BitBucket，Gitlab等）
@@ -49,19 +49,33 @@
     -g <parameter>: 指定参数
     -w <workDir>: 覆盖Dockerfile文件中定义的WORKDIR目录。
     -e <environmentParameterName environmentParameterValue>: 用于传递环境变量。这些变量将只会在运行时有效。
+    -v \[HostDirectory\] ContainerDirectory \[:Option\] 这个选项允许我们将宿主机的目录作为卷，挂载到容器里。
+        Option是指可以通过在目的目录后面加上rw或者ro来指定目的目录的读写状态。
+        卷在Docker里非常重要，也很有用。卷是一个或者多个容器内被选定的目录，可以绕过分层的联合文件系统（Union File System）,
+        为Docker提供持久数据或者共享数据。这意味着对卷的修改会直接生效，并绕过镜像。当提交或者创建镜像时，卷不被包含在镜像里。
+    --link <要链接的容器名字> <链接后容器的别名>： 创建了两个容器间的父子链接。通过把容器链接在一起，可以让父容器直接访问任意子容器的公开端口。
+            只有使用--link标志链接到这个容器的容器才能连接到这个端口。容器的端口不需要对本地宿主机公开。
+            **处于安全原因（或者其他原因），可以强制Docker只允许有链接的容器之间互相通信。需要在启动Docker守护进程时加上--icc=false标志，关闭所有没有链接的容器间的通信。**
+            **被链接的容器必须运行同一个Docker宿主机上。不同Docker宿主机上运行的容器无法连接**
+    -h or --hostname <hostname>: 来为容器设定主机名
+    --dns or --dns-search: 标志来为某个容器单独配置DNS。可以设置本地DNS解析的路径和搜索域。
+    --privileged : 启动Docker的特权模式，这种模式允许我们以其宿主
+    --cidfile: 这个选项会让Docker截获容器ID并将其存到--cidfile选项指定的文件里。如--cidfile=/tmp/containerid.txt
+    --volumes-from: 指定容器里的所有卷都加入新创建的容器里。
+    --rm: 这个标志对于只用一次的容器，或者说用完即扔的容器，很有用。这个标志会在容器的进程运行完毕后，自动删除容器。对于只用一次的容器来说，这是一种很方便的清理方法。
 * docker start <容器名/容器ID>
     重新启动一个已经停止的容器
 * docker restart  <容器名/容器ID>
     重新启动一个容器。
-* docker attach <容器名/容器ID>  
-    附着到该容器的会话上。 
+* docker attach <容器名/容器ID>  -i -t  
+    附着到该容器的会话上。
 * docker ps  
     默认情况下，当执行docker ps命令时，只能看到正在运行的容器。    
     -a : 查看当前系统中容器（包括正在运行的和已经停止的）的列表。   
     -n x: 会显示最后x个容器，不论这些容器正在运行还是已经停止。   
     -q: 表示只需要返回容器的ID而不会返回容器的其他信息。   
     -l: 列出详细信息？
-* docker logs <容器名/容器ID>
+* docker logs <容器名/容器ID> 
     查看容器内部都在干些什么。可以通过Ctrl+C退出日志跟踪。  
     参数-f: 来监控Docker的日志，这与tail -f命令非常相似。  
     参数--tail <number>:可以跟踪容器日志的某一片段。例如docker logs --tail 10 -f daemon_dave命令来跟踪某个容器的最新日志而不必读取整个日志文件。  
@@ -78,7 +92,8 @@
 * docker rm  <容器名/容器ID>  
     删除容器。需要注意的是，运行中的Docker容器是无法删除的！你必须先通过docker stop或docker kill命令停止容器，才能将其删除。  
     可以通过docker rm \`docker ps -a -q\`来一次性删除所有的容器。  
-    
+* docker kill -s <signal> <container>
+    发送指定的信号（如HUP信号）给容器，而不是杀掉容器。
     
 ## Docker镜像
 **在构建容器时指定仓库的标签也是一个很好的习惯。
@@ -161,4 +176,16 @@ Docker Hub中有两种类型的仓库：用户仓库（user repository）和顶�
     4. 系统将提示你选择用来进行自动构建的组织和仓库。单击想用来进行自动构建的仓库后面的select按钮，之后开始对自动构建进行配置。（指定想使用的默认的分支名，并确认仓库名）
     5. 为每次自动构建过程创建的镜像指定一个标签，并指定Dockerfile的位置。
     6. 单击Create Repository按钮来将你的自动构建添加到Docker Hub中。
+
+# Docker内部网路
+    安装Docker时，会创建一个新的网络接口，名字是docker0。每个Docker容器都会在这个接口上分配一个IP地址。
+    docker0接口有符合RFC1918的私有IP地址，范围是172.16~172.30。接口本身的地址是172.17.42.1是这个Docker网络的网关地址，也是所有Docker容器的网关地址。
+    接口docker0是一个虚拟的以太网桥，用于连接容器和本地宿主网络。如果进一步查看Docker宿主机的其他网络接口，会发现一系列名字以veth开头的接口。
+    Docker每创建一个容器就会创建一组互联的网络接口。这组接口就像管道的两端（就是说，从一端发送的数据会在另一端接收到）。这组接口其中一端作为容器里的eth0接口。
+    而另一端统一命名为类似vethec6a这种名字，作为宿主机的一个端口。你可以把veth接口认为是虚拟网线的一端。这个虚拟网线一端插在名为docker0的网桥上，另一端插到容器里。
+    通过把每个veth*接口绑定到docker0网桥，Docker创建了一个虚拟子网，这个子网由宿主机和所有的Docker容器共享。
+    不过Docker网络还有另一个部分配置才能允许建立连接：防火墙规则和NAT设置。这些配置允许Docker在宿主网络和容器间路由。容器默认是无法访问的。从宿主机网络与容器通信时，
+    必须明确指定打开的端口。
+    因为重启容器，Docker会改变容器的IP地址，所以Docker提供了一个叫做链接(link)的功能非常有用，这个功能可以把一个或者多个Docker容器链接起来，让其互相通信。
+    
     
