@@ -74,6 +74,8 @@
     * Core
     * Apache Mesos
     * DC/OS
+    * [Docker Swarm](Devops/Container/Docker/DockerSwarm.md)
+        * [Docker Compose](./Devops/Container/Docker/DockerCompose.md)
 * 服务注册与发现
     * Zookeeper
     * etcd
@@ -102,6 +104,8 @@
     * Varnish
 * 消息总线
     * ActiveMQ
+    * RabbitMQ
+    * Kafka
     * SQS
 * 应用服务器
     * Tomcat
@@ -181,3 +185,11 @@ olyfillを作成するのはブpラウザなどの実装に知悉してなけれ
 
 ## 6.IDE
 * [IntelliJ Idea](./IDE/IntelliJIdea/IntelliJIdea.md)
+
+
+## Task
+### 翻译
+1. [Docker swarm mode overlay network security model.](https://docs.docker.com/v17.03/engine/userguide/networking/overlay-security-model/)
+2. [Deploy services to a swarm](https://docs.docker.com/v17.03/engine/userguide/networking/overlay-security-model/)
+3. node可以有Label？
+

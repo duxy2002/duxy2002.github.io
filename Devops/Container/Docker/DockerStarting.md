@@ -128,7 +128,60 @@ Docker Hub中有两种类型的仓库：用户仓库（user repository）和顶�
 * docker rmi <镜像名>
    删除镜像
    docker rm \`docker images -a -q\`来删除所有镜像。
+
+## Docker machine
+* docker-machine ls
+可以列出可用的机器，我们可以看到还没有运行着的机器。
+
+* docker-machine create --driver virtualbox node0
+   指定使用VirtualBox驱动（可以简单使用-d代替）并且将该机器命名为node0.
+   docker-machine create -d virtualbox \
+                  --engine-env http_proxy=${http_proxy} \
+                  --engine-env https_proxy=${https_proxy} \
+                  default
+    可以通过上面形式，设置代理服务器地址。
    
+* docker-machine env node0
+ 会打印出一些shell变量。只需要复制最后一行（带有eval的那行），黏贴并且输入Enter。配置了这些变量之后，你操作的就不再是本地daemon了。而是node0的Docker Daemon。
+
+* docker-machine active
+   打印出当前活跃的机器。
+
+* docker-machine ssh <node名>
+   通过SSH到节点。
+
+* docker-machine ip <node名>
+    Get the host IP address.
+
+*  docker-machine stop <node名>
+    Start  machines
+*  docker-machine start <node名>
+    stop machines
+
+* docker-machine active
+    打印出当前活跃的机器。
+
+* docker-machine  config                Print the connection config for machine
+* docker-machine  create                Create a machine
+* docker-machine  env                   Display the commands to set up the environment for the Docker client
+* docker-machine  inspect               Inspect information about a machine
+* docker-machine  ip                    Get the IP address of a machine
+* docker-machine  kill                  Kill a machine
+* docker-machine  ls                    List machines
+* docker-machine  provision             Re-provision existing machines
+* docker-machine  regenerate-certs      Regenerate TLS Certificates for a machine
+* docker-machine  restart               Restart a machine
+* docker-machine  rm                    Remove a machine
+* docker-machine  ssh                   Log into or run a command on a machine with SSH.
+* docker-machine  scp                   Copy files between machines
+* docker-machine  start                 Start a machine
+* docker-machine  status                Get the status of a machine
+* docker-machine  stop                  Stop a machine
+* docker-machine  upgrade               Upgrade a machine to the latest version of Docker
+* docker-machine  url                   Get the URL of a machine
+* docker-machine  version               Show the Docker Machine version or a machine docker version
+* docker-machine  help                  Shows a list of commands or help for one command
+      
 ### Dockerfile的格式
 * 第一条指令都应该是FROM。
 * 接着指定MAINTAINER，这条指令会告诉Docker该镜像的作者是谁，以及作者的电子邮件地址。
